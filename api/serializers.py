@@ -1,6 +1,8 @@
 from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework.fields import ReadOnlyField
+from rest_framework.views import set_rollback
 from .models import Kol, Moin, Tafsili, Sanad, Artykl
 
 
@@ -56,31 +58,53 @@ class TafsiliSerializer(serializers.ModelSerializer):
         model = Tafsili
 
 
-class SanadSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = (
-            'id',
-            'date',
-            'note',
-            'date_created'
-        )
-        model = Sanad
-
-
 class ArtyklSerializer(serializers.ModelSerializer):
+    kol_name = serializers.CharField(source="kol.name", read_only=True)
+    moin_name = serializers.CharField(source="moin.name", read_only=True)
+    taf1_name = serializers.CharField(source="taf1.name", read_only=True)
+    taf2_name = serializers.CharField(source="taf2.name", read_only=True)
+    taf3_name = serializers.CharField(source="taf3.name", read_only=True)
+
     class Meta:
+        model = Artykl
         fields = (
             'sanad',
             'id',
             'kol',
+            'kol_name',
             'moin',
+            'moin_name',
             'taf1',
+            'taf1_name',
             'taf2',
+            'taf2_name',
             'taf3',
+            'taf3_name',
             'bed',
             'bes',
             'note',
             'user',
             'date_created'
         )
-        model = Artykl
+
+
+class SanadSerializer(serializers.ModelSerializer):
+    artykls = ArtyklSerializer(many=True)
+    # id = serializers.IntegerField()
+    # date = serializers.CharField()
+    # bed = serializers.FloatField()
+    # bes = serializers.FloatField()
+    # note = serializers.CharField()
+    # date_created = serializers.CharField()
+
+    class Meta:
+        fields = (
+            'id',
+            'date',
+            # 'bed',
+            # 'bes',
+            'note',
+            'date_created',
+            'artykls'
+        )
+        model = Sanad

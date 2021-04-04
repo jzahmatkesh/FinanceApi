@@ -52,6 +52,10 @@ class DetailTafsili(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListSanad(generics.ListCreateAPIView):
+    # queryset = Sanad.objects.raw("""
+    #                             SELECT a.id, a.date, a.note, a.date_created, sum(b.bed) bed, sum(b.bes) bes
+    #                             FROM api_sanad a inner join api_artykl b on a.id = b.sanad_id
+    #                             group by a.id, a.date, a.note, a.date_created;""")
     queryset = Sanad.objects.all()
     serializer_class = SanadSerializer
 

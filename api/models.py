@@ -62,14 +62,14 @@ class Artykl(models.Model):
     moin = models.ForeignKey(Moin, related_name='moins',
                              on_delete=models.CASCADE)
     taf1 = models.ForeignKey(
-        Tafsili, related_name='taf1s', on_delete=models.CASCADE)
+        Tafsili, related_name='taf1s', on_delete=models.CASCADE, null=True, blank=True)
     taf2 = models.ForeignKey(
-        Tafsili, related_name='taf2s', on_delete=models.CASCADE)
+        Tafsili, related_name='taf2s', on_delete=models.CASCADE, null=True, blank=True)
     taf3 = models.ForeignKey(
-        Tafsili, related_name='taf3s', on_delete=models.CASCADE)
-    bed = models.FloatField()
-    bes = models.FloatField()
-    note = models.CharField(max_length=1000)
+        Tafsili, related_name='taf3s', on_delete=models.CASCADE, null=True, blank=True)
+    bed = models.FloatField(null=True, blank=True)
+    bes = models.FloatField(null=True, blank=True)
+    note = models.CharField(max_length=1000, null=True, blank=True)
     user = models.ForeignKey(User, related_name='users',
                              on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -78,4 +78,5 @@ class Artykl(models.Model):
         verbose_name_plural = "آرتیکل های حسابداری"
 
     def __str__(self):
-        return self.note
+        return '%d, %s, %s, %s, %s, %s, %s, %s, %s' % (self.id, self.kol, self.moin, self.taf1, self.taf2, self.taf3, self.bed, self.bes, self.note)
+        # return self.note
